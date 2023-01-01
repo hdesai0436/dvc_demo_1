@@ -1,0 +1,63 @@
+stages:
+  load_data:
+    cmd: python src/stage_01.py --config=config/config.yaml
+    deps:
+    - src/stage_01.py
+    - src/utils/all_utils.py
+    - config/config.yaml
+    outs:
+    - artifacts/raw_local_dir/data.csv
+
+  split_data:
+    cmd: python src/stage_02.py --config=config/config.yaml --params=params.yaml
+    deps:
+      - src/stage_02.py
+      - src/utils/all_utils.py
+      - config/config.yaml
+      - artifacts/raw_local_dir/data.csv
+
+    params:
+    - base.random_state
+    - base.test_size
+    outs:
+    - artifacts/split_data_dir/train.csv
+    - artifacts/split_data_dir/test.csv
+
+  train:
+    cmd: python src/train.py --config=config/config.yaml --params=params.yaml
+
+    deps:
+      - src/train.py
+      - artifacts/split_data_dir/train.csv
+      - src/utils/all_utils.py
+      - config/config.yaml
+    params:
+    - train.max_depth
+    - train.n_estimators
+
+    outs:
+    - artifacts/model_dir/pipe.pkl
+
+  model_test:
+    cmd: python src/eval.py --config=config/config.yaml
+
+    deps:
+    - src/eval.py
+    - src/utils/all_utils.py
+    - config/config.yaml
+    - artifacts/model_dir/pipe.pkl
+
+
+    metrics:
+    - metrics.json:
+        cache: false
+
+    outs:
+    - metrics.json
+
+
+     
+
+    
+    
+

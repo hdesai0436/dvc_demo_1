@@ -1,0 +1,13 @@
+data_source: 'C:\Users\hardi\Documents\mlops_dvc\diabetes.csv'
+artifacts:
+  artifacts_dir: artifacts
+  raw_local_dir: raw_local_dir
+  raw_local_file: data.csv
+
+
+  split_data_dir: split_data_dir
+  train: train.csv
+  test: test.csv
+  model:
+    model_dir: model_dir
+    model_file: pipe.pkl

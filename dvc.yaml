@@ -48,9 +48,7 @@ stages:
     - artifacts/model_dir/pipe.pkl
 
 
-    metrics:
-    - metrics.json:
-        cache: false
+    
 
     outs:
     - metrics.json

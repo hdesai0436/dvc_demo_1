@@ -1,0 +1,86 @@
+schema: '2.0'
+stages:
+  load_data:
+    cmd: python src/stage_01.py --config=config/config.yaml
+    deps:
+    - path: config/config.yaml
+      md5: 96bc544a3a3454197ab1514e9a2ad07a
+      size: 300
+    - path: src/stage_01.py
+      md5: 5638fa2d64c325d1fc12388967896801
+      size: 997
+    - path: src/utils/all_utils.py
+      md5: b0a07e2a46b79153cfc9cc02b40e7d8f
+      size: 620
+    outs:
+    - path: artifacts/raw_local_dir/data.csv
+      md5: 60acca81995dc9744b499005ecfe6f2a
+      size: 24059
+  split_data:
+    cmd: python src/stage_02.py --config=config/config.yaml --params=params.yaml
+    deps:
+    - path: artifacts/raw_local_dir/data.csv
+      md5: 60acca81995dc9744b499005ecfe6f2a
+      size: 24059
+    - path: config/config.yaml
+      md5: 96bc544a3a3454197ab1514e9a2ad07a
+      size: 300
+    - path: src/stage_02.py
+      md5: a9b702d19c551354299efe2ae344659b
+      size: 1646
+    - path: src/utils/all_utils.py
+      md5: b0a07e2a46b79153cfc9cc02b40e7d8f
+      size: 620
+    params:
+      params.yaml:
+        base.random_state: 43
+        base.test_size: 0.2
+    outs:
+    - path: artifacts/split_data_dir/test.csv
+      md5: 713625cf251b2ebb1470018dedf0148a
+      size: 4889
+    - path: artifacts/split_data_dir/train.csv
+      md5: 28741e00637bdefe164b90d635142c45
+      size: 19268
+  train:
+    cmd: python src/train.py --config=config/config.yaml --params=params.yaml
+    deps:
+    - path: artifacts/split_data_dir/train.csv
+      md5: 28741e00637bdefe164b90d635142c45
+      size: 19268
+    - path: config/config.yaml
+      md5: 96bc544a3a3454197ab1514e9a2ad07a
+      size: 300
+    - path: src/train.py
+      md5: da9897b20e7b5f74ad579ea52452e25d
+      size: 2166
+    - path: src/utils/all_utils.py
+      md5: b0a07e2a46b79153cfc9cc02b40e7d8f
+      size: 620
+    params:
+      params.yaml:
+        train.max_depth: 50
+        train.n_estimators: 700
+    outs:
+    - path: artifacts/model_dir/pipe.pkl
+      md5: 139c5cc544abecf2a996d7c3bf21c346
+      size: 13142763
+  model_test:
+    cmd: python src/eval.py --config=config/config.yaml
+    deps:
+    - path: artifacts/model_dir/pipe.pkl
+      md5: 139c5cc544abecf2a996d7c3bf21c346
+      size: 13142763
+    - path: config/config.yaml
+      md5: 96bc544a3a3454197ab1514e9a2ad07a
+      size: 300
+    - path: src/eval.py
+      md5: 7220f11992971689adafb68ad00b1ed2
+      size: 1434
+    - path: src/utils/all_utils.py
+      md5: b0a07e2a46b79153cfc9cc02b40e7d8f
+      size: 620
+    outs:
+    - path: metrics.json
+      md5: 204929a39bd7fc6882404ec13e4ed3d8
+      size: 37

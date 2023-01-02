@@ -3,7 +3,7 @@ import pandas as pd
 from src.utils.all_utils import read_yaml,load_model,create_dir,save_local_df
 import os
 from sklearn.metrics import roc_auc_score,roc_curve
-from sklearn.metrics import precision_score, recall_score, f1_score,accuracy_score
+from sklearn.metrics import precision_score, recall_score, f1_score,accuracy_score,precision_recall_curve
 import json
 import math
 
@@ -31,6 +31,29 @@ def eval(config_path,params_path):
             'roc_auc_score':roc_auc
         },rf)
 
+    precision, recall, prc_thresholds = precision_recall_curve(y, pred)
+    nth_point = math.ceil(len(prc_thresholds) / 1000)
+    prc_points = list(zip(precision, recall, prc_thresholds))[::nth_point]
+    
+   
+    with open("roc.json", "w") as fd:
+        json.dump(
+            {
+              "prc": [
+                   {"precision": float(p), "recall": float(r), "threshold": float(t)}
+                    for p, r, t in prc_points
+                   
+                ]
+
+            },
+            fd,
+            indent=4,
+            
+        )
+
+    
+    
+    
 
 
 if __name__ ==  "__main__":

@@ -59,28 +59,28 @@ stages:
       size: 620
     params:
       params.yaml:
-        train.max_depth: 50
-        train.n_estimators: 700
+        train.max_depth: 40
+        train.n_estimators: 800
     outs:
     - path: artifacts/model_dir/pipe.pkl
-      md5: 139c5cc544abecf2a996d7c3bf21c346
-      size: 13142763
+      md5: af6a819b1cc245f716d77e5028c28996
+      size: 15151723
   model_test:
     cmd: python src/eval.py --config=config/config.yaml
     deps:
     - path: artifacts/model_dir/pipe.pkl
-      md5: 139c5cc544abecf2a996d7c3bf21c346
-      size: 13142763
+      md5: af6a819b1cc245f716d77e5028c28996
+      size: 15151723
     - path: config/config.yaml
       md5: 96bc544a3a3454197ab1514e9a2ad07a
       size: 300
     - path: src/eval.py
-      md5: 7220f11992971689adafb68ad00b1ed2
-      size: 1434
+      md5: 29f80b314d8e4fe7e11987bffef6e858
+      size: 2047
     - path: src/utils/all_utils.py
       md5: b0a07e2a46b79153cfc9cc02b40e7d8f
       size: 620
     outs:
     - path: metrics.json
-      md5: 204929a39bd7fc6882404ec13e4ed3d8
+      md5: 0a7938eb9b4cc009c5ef860bbee77d4f
       size: 37

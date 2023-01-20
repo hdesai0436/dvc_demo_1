@@ -3,5 +3,5 @@ base:
   test_size: 0.2
 
 train:
-  max_depth: 40
-  n_estimators: 800
+  max_depth: 22
+  n_estimators: 900

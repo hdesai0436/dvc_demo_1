@@ -6,7 +6,7 @@
             "threshold": 0.0
         },
         {
-            "precision": 0.6363636363636364,
+            "precision": 0.625,
             "recall": 0.6481481481481481,
             "threshold": 1.0
         }

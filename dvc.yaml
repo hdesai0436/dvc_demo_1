@@ -55,8 +55,8 @@ stages:
 plots:
   - Precision-Recall:
       x: recall
-      y:
-        roc.json: precision
+      y: precision
+        roc.json
 
 
      
